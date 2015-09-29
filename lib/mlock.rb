@@ -133,9 +133,9 @@ class Mlock
 
 	end
 
-	def self.lock(wlocks, rlocks, timeout = Mlock::Default_timeout)
+	def self.lock(rlocks, wlocks = [], timeout = Mlock::Default_timeout)
 		raise "no block given" unless block_given?
-		lock_multi_set(wlocks, rlocks, timeout)
+		lock_multi_set(rlocks, wlocks, timeout)
 		begin
 			ret = yield
 		ensure
