@@ -131,15 +131,17 @@ class Mlock
 			Mlock.redis.del(owner_locks_key)
 		}
 
+		return true
+
 	end
 
 	def self.lock(rlocks, wlocks = [], timeout = Mlock::Default_timeout)
 		raise "no block given" unless block_given?
-		lock_multi_set(rlocks, wlocks, timeout)
+		self.set(rlocks, wlocks, timeout)
 		begin
 			ret = yield
 		ensure
-			lock_multi_release
+			self.release!
 		end
 		return ret
 	end
